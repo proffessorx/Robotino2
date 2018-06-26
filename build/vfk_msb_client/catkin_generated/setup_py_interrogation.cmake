@@ -1,0 +1,6 @@
+set(vfk_msb_client_SETUP_PY_VERSION "1.4.0")
+set(vfk_msb_client_SETUP_PY_SCRIPTS "")
+set(vfk_msb_client_SETUP_PY_PACKAGES "tbd")
+set(vfk_msb_client_SETUP_PY_PACKAGE_DIRS "src/tbd")
+set(vfk_msb_client_SETUP_PY_MODULES "")
+set(vfk_msb_client_SETUP_PY_MODULE_DIRS "")

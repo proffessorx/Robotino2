@@ -1,0 +1,8 @@
+prefix=/home/robotino/catkin_ws/devel
+
+Name: logistics_relay
+Description: Description of logistics_relay
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/robotino/catkin_ws/devel/lib 
+Requires: 

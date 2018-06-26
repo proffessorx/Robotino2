@@ -1,0 +1,80 @@
+## ! DO NOT MANUALLY INVOKE THIS setup.py, USE CATKIN INSTEAD
+
+from distutils.core import setup
+from catkin_pkg.python_setup import generate_distutils_setup
+from catkin_pkg.package import parse_package
+import sys, os, re, shutil
+from subprocess import call
+
+# fetch values from package.xml
+setup_args = generate_distutils_setup(
+    packages=['tbd'],
+    package_dir={'': 'src'},
+)
+
+package = parse_package(os.path.curdir)
+versiontag = str(package.exports[0])
+ver_tag = re.search('([A-Z]+)', versiontag).group(0)
+if not ver_tag:
+    raise RuntimeError("Please define msb version tag in package.xml (e.g. RELEASE)")
+msb_version = str(setup_args['version'] + "-" + ver_tag)
+print("Downloading MSB Version: " + msb_version + " .....")
+
+ros_url = "https://repo.virtualfortknox.de/filerepository/vfk_public/non-java-client-libs/1.4.0-RELEASE/vfk.msb.client.library.websocket.ros-" + msb_version + ".zip"
+msb_url = "https://repo.virtualfortknox.de/filerepository/vfk_public/non-java-client-libs/1.4.0-RELEASE/vfk.msb.client.library.websocket.python-" + msb_version + ".zip"
+
+if not os.path.exists('temp'):
+    os.makedirs('temp')
+
+call(["wget",
+  "-q",
+  "-O",
+  "temp/vfk-ros.zip",
+  ros_url,
+  "--user",
+  "vfk_repo_public_read",
+  "--password",
+  "eNljCqWs"])
+
+call(["unzip",
+  "-q",
+  "-o",
+  "temp/vfk-ros.zip",
+  "-d",
+  "temp"])
+
+call(["wget",
+  "-q",
+  "-O",
+  "temp/vfk-msb.zip",
+  msb_url,
+  "--user",
+  "vfk_repo_public_read",
+  "--password",
+  "eNljCqWs"])
+
+call(["unzip",
+  "-q",
+  "-o",
+  "temp/vfk-msb.zip",
+  "-d",
+  "temp"])
+
+call(["cp",
+"-r",
+"temp/vfk.msb.client/vfk.msb.client.library/vfk.msb.client.library.websocket.ros/vfk_msb_client/scripts",
+"temp/vfk.msb.client/vfk.msb.client.library/vfk.msb.client.library.websocket.ros/vfk_msb_client/launch",
+"."])
+
+call(["cp",
+"-r",
+"temp/vfk.msb.client/vfk.msb.client.library/vfk.msb.client.library.websocket.python/vfk_msb_py",
+"scripts/"])
+
+call(["chmod",
+"+x",
+"scripts/msb_ros_bridge.py"])
+
+shutil.rmtree("temp")
+
+setup(**setup_args)
